@@ -5,41 +5,32 @@
  * @format
  */
 
-import { NewAppScreen } from '@react-native/new-app-screen';
-import { StatusBar, StyleSheet, useColorScheme, View } from 'react-native';
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from 'react-native-safe-area-context';
+
+//import {  StyleSheet, View, Text, TextInput, TouchableOpacity, FlatList, Image } from 'react-native';
+import Toast from "react-native-toast-message";
+import { NavigationContainer } from '@react-navigation/native';
+import AppNavigator from './src/navigation/AppNavigator';
+import React from "react";
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
+import { store, persistor } from "./src/redux/store/userStore";
+//import HomeScreen from './src/screens/HomeScreen';
 
 function App() {
-  const isDarkMode = useColorScheme() === 'dark';
+  
+  
 
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <AppContent />
-    </SafeAreaProvider>
+    <Provider store={store}>
+      <PersistGate loading={null} persistor={persistor}>
+        <NavigationContainer>
+      <AppNavigator />
+        <Toast />
+    </NavigationContainer>
+      </PersistGate>
+   </Provider>
+   
   );
+
 }
-
-function AppContent() {
-  const safeAreaInsets = useSafeAreaInsets();
-
-  return (
-    <View style={styles.container}>
-      <NewAppScreen
-        templateFileName="App.tsx"
-        safeAreaInsets={safeAreaInsets}
-      />
-    </View>
-  );
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-});
-
 export default App;
